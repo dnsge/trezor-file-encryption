@@ -6,7 +6,7 @@ import sys
 from trezorlib.client import TrezorClient
 from trezorlib.ui import ClickUI
 
-from trezor_encrypter import EncryptionSession, trezor_encrypt_dir, wait_for_devices, choose_device, trezor_decrypt_dir
+from trezor_file_encryption import EncryptionSession, trezor_encrypt_dir, wait_for_devices, choose_device, trezor_decrypt_dir
 
 help_text = """
 Usage: trezorenc COMMAND [OPTIONS]

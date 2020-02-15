@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from trezor_encrypter.crypt import encrypt_raw, decrypt_raw
+from trezor_file_encryption.crypt import encrypt_raw, decrypt_raw
 
 storage_dir = '.trezor_enc'
 

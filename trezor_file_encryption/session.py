@@ -3,7 +3,7 @@ from colorama import init, Fore, Style
 from trezorlib.client import TrezorClient
 from trezorlib.ui import ClickUI
 
-from trezor_encrypter.trezor import wait_for_devices, choose_device, trezor_decrypt_dir, trezor_encrypt_dir
+from trezor_file_encryption.trezor import wait_for_devices, choose_device, trezor_decrypt_dir, trezor_encrypt_dir
 
 init()
 orange = (255, 165, 0)

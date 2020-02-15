@@ -15,7 +15,7 @@ from trezorlib.ui import ClickUI
 
 import trezorlib.misc
 
-from trezor_encrypter.files import get_all_files, create_storage_dir, encrypt_file, decrypt_file, get_storage_dir
+from trezor_file_encryption.files import get_all_files, create_storage_dir, encrypt_file, decrypt_file, get_storage_dir
 
 BIP32_PATH_TEXT = "8294'/0"
 bip32_path = parse_path(BIP32_PATH_TEXT)
