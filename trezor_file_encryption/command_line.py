@@ -60,7 +60,6 @@ def run():
         trezor_encrypt_dir(c, directory)
         return 0
     elif args[0] == 'decrypt':
-        print('decrypting')
         devices = wait_for_devices()
         transport = choose_device(devices)
         c = TrezorClient(transport, ui=ClickUI())
