@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Tuple, Optional
 
 from trezor_file_encryption.crypt import encrypt_raw, decrypt_raw
 
@@ -48,35 +48,35 @@ def get_all_files(where: str = None):
     return _iterate_over_files(where)
 
 
-def encrypt_file(key: bytes, path: str) -> bool:
+def encrypt_file(key: bytes, path: str) -> Tuple[bool, Optional[str]]:
     try:
         with open(path, 'rb+') as f:
             data = f.read()
             try:
                 enc = encrypt_raw(key, data)
-            except:
-                return False
+            except Exception as e:
+                return False, str(e)
             else:
                 f.seek(0)
                 f.truncate()
                 f.write(enc)
-                return True
-    except (IOError, OSError):
-        return False
+                return True, None
+    except (IOError, OSError) as e:
+        return False, str(e)
 
 
-def decrypt_file(key: bytes, path: str) -> bool:
+def decrypt_file(key: bytes, path: str) -> Tuple[bool, Optional[str]]:
     try:
         with open(path, 'rb+') as f:
             data = f.read()
             try:
                 dec = decrypt_raw(key, data)
-            except:
-                return False
+            except Exception as e:
+                return False, str(e)
             else:
                 f.seek(0)
                 f.truncate()
                 f.write(dec)
-                return True
-    except (IOError, OSError):
-        return False
+                return True, None
+    except (IOError, OSError) as e:
+        return False, str(e)

@@ -162,11 +162,11 @@ def trezor_encrypt_dir(client: TrezorClient, path: str):
 
     for file in all_files:
         print(f'{colorama.Style.BRIGHT} [ ] {file}', end='\r')
-        res = encrypt_file(pwd, file)
+        res, msg = encrypt_file(pwd, file)
         if res:
             print(f'{colorama.Fore.GREEN} [✓]{colorama.Fore.RESET} {file}')
         else:
-            print(f'{colorama.Fore.RED} [✗]{colorama.Fore.RESET} {file}')
+            print(f'{colorama.Fore.RED} [✗]{colorama.Fore.RESET} {file} - {colorama.Fore.RED}{msg}')
 
     storage_data['encrypted'] = True
     json.dump(storage_data, open(dat_path, 'w'))
@@ -201,11 +201,11 @@ def trezor_decrypt_dir(client: TrezorClient, path: str):
 
     for file in all_files:
         print(f'{colorama.Style.BRIGHT}{colorama.Fore.RESET} [ ] {file}', end='\r')
-        res = decrypt_file(pwd, file)
+        res, msg = decrypt_file(pwd, file)
         if res:
             print(f'{colorama.Fore.GREEN} [✓]{colorama.Fore.RESET} {file}')
         else:
-            print(f'{colorama.Fore.RED} [✗]{colorama.Fore.RESET} {file}')
+            print(f'{colorama.Fore.RED} [✗]{colorama.Fore.RESET} {file} - {colorama.Fore.RED}{msg}')
 
     storage_data['encrypted'] = False
     json.dump(storage_data, open(dat_path, 'w'))

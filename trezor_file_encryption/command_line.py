@@ -1,12 +1,13 @@
-#!/usr/bin/env python3
-
 import os
 import sys
 
 from trezorlib.client import TrezorClient
 from trezorlib.ui import ClickUI
 
-from trezor_file_encryption import EncryptionSession, trezor_encrypt_dir, wait_for_devices, choose_device, trezor_decrypt_dir
+import colorama
+
+from trezor_file_encryption import EncryptionSession, trezor_encrypt_dir, wait_for_devices, choose_device, \
+    trezor_decrypt_dir
 
 help_text = """
 Usage: trezorenc COMMAND [OPTIONS]
@@ -22,8 +23,12 @@ Commands:
 """.strip()
 
 
-def main():
+def run():
     args = sys.argv[1:]
+
+    if len(args) == 0 or any(arg in ('help', '--help', '-h') for arg in args):
+        print(help_text)
+        return 0
 
     # Poor-man's command line argument parsing
     if len(args) > 1:
@@ -32,29 +37,46 @@ def main():
                 directory = args[2]
             else:
                 print('Missing directory')
-                return
+                return 2
         else:
             print(f'Unknown option "{args[1]}"')
-            return
+            return 1
     else:
         directory = os.getcwd()
 
-    if args[0] == 'help':
-        print(help_text)
-    elif args[0] == 'interactive':
+    has_access = os.access(directory, os.W_OK | os.X_OK)
+    if not has_access:
+        print(f'{colorama.Fore.RED}Error: you do not have sufficient permissions for {directory}')
+        return
+
+    if args[0] == 'interactive':
         session = EncryptionSession(directory)
         session.run_menu()
+        return 0
     elif args[0] == 'encrypt':
         devices = wait_for_devices()
         transport = choose_device(devices)
         c = TrezorClient(transport, ui=ClickUI())
         trezor_encrypt_dir(c, directory)
+        return 0
     elif args[0] == 'decrypt':
         print('decrypting')
         devices = wait_for_devices()
         transport = choose_device(devices)
         c = TrezorClient(transport, ui=ClickUI())
         trezor_decrypt_dir(c, directory)
+        return 0
+    else:
+        print(help_text)
+        return 0
+
+
+def main():
+    try:
+        return run()
+    except KeyboardInterrupt:
+        print()
+        return 1
 
 
 if __name__ == '__main__':
