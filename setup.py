@@ -19,7 +19,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
-    url='https://github.com/dnsge/',
+    url='https://github.com/dnsge/trezor-file-encryption',
     install_requires=install_requires,
     classifiers=[
         "Programming Language :: Python :: 3",
